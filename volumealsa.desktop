@@ -1,0 +1,10 @@
+[Xfce Panel]
+Type=X-XFCE-PanelPlugin
+Encoding=UTF-8
+Name=Alsa Volume
+Comment=Monitors CPU Usage as graph
+Icon=audio-volume-high
+X-XFCE-Module=volumealsa
+X-XFCE-Internal=true
+X-XFCE-Unique=false
+X-XFCE-API=2.0
