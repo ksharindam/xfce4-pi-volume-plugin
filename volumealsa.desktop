@@ -2,7 +2,7 @@
 Type=X-XFCE-PanelPlugin
 Encoding=UTF-8
 Name=Alsa Volume
-Comment=Monitors CPU Usage as graph
+Comment=Change audio volume
 Icon=audio-volume-high
 X-XFCE-Module=volumealsa
 X-XFCE-Internal=true
