@@ -1,0 +1,35 @@
+This plugin has been ported from Lxplug-Volume plugin v0.21.
+The following changes has been made.
+
+In the constructor lxpanel returns the top level GtkWidget which is shown in the
+panel. but xfce panel returns void.
+
+static GtkWidget *volumealsa_constructor (LXPanel *panel, config_setting_t *settings)
+has been replaced with
+static void volumealsa_constructor (XfcePanelPlugin *panel_plugin)
+
+At the last line of constructor replace 
+return toplevel_widget;
+with
+gtk_container_add(GTK_CONTAINER(panel_plugin), toplevel_widget);
+
+connect "free-data" signal to volumealsa-destructor
+
+lxpanel_plugin_set_taskbar_icon() and lxpanel_plugin_set_menu_icon()
+have been replaced with
+void gtkimage_set_icon(GtkWidget *image, const char *name, int size)
+{
+    GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
+    GdkPixbuf *pixbuf = xfce_panel_pixbuf_from_source(name, icon_theme, size);
+    gtk_image_set_from_pixbuf (GTK_IMAGE (image), pixbuf);
+    if (pixbuf != NULL) g_object_unref (pixbuf);
+}
+
+lxpanel_plugin_popup_set_position_helper()
+hasbeen replaced with
+xfce_panel_plugin_position_widget()
+
+FM_DEFINE_MODULE (lxpanel_gtk, volumealsabt)
+has been replaced with
+XFCE_PANEL_PLUGIN_REGISTER_INTERNAL(volumealsa_constructor);
+

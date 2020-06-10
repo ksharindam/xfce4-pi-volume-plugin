@@ -6,13 +6,13 @@ Although xfce4 has its own volume plugins, but those have these following proble
 * Volume can not be increased much.  
 * Another plugin depends on pulseaudio, but it causes several sound problem (such as, no sound in dosbox, audio player is paused automatically).  
 
-To solve these problems, i have ported lxvolume plugin to xfce. It depends only on alsa.  
+To solve these problems, i have ported lxplug-volume plugin to xfce. It depends only on alsa.  
 
 ## Build
 install these build dependencies...  
-* libgtk-3-dev  
-* libxfce4panel-2.0-dev  
-* libasound2-dev
+* libasound2-dev  
+* xfce4-panel-dev  
+* libgtk2.0-dev (automatically installed)  
 
 Unzip the source archive.  
 Open terminal and change directory to xfce4-pi-volume-plugin-master directory.  

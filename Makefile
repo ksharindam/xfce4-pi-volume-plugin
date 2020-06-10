@@ -3,7 +3,9 @@ LIBDIR = /usr/lib/arm-linux-gnueabihf
 PLUGIN_DIR = $(LIBDIR)/xfce4/panel/plugins
 DESKTOP_DIR = /usr/share/xfce4/panel/plugins
 DESTDIR =
-CFLAGS = `pkg-config --cflags --libs libxfce4panel-2.0 alsa` -Wl,-rpath=$(LIBDIR) -shared -fPIC -Wall
+# dependency : xfce4-panel-dev (or libxfce4panel-2.0-dev for gtk3)
+CFLAGS = `pkg-config --cflags --libs libxfce4panel-1.0 alsa` -shared -fPIC -Wall
+
 all:
 	gcc -o lib$(MODULE).so $(CFLAGS) $(MODULE).c
 install:
