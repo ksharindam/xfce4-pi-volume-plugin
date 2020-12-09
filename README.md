@@ -1,23 +1,32 @@
-# xfce4-pi-volume-plugin
-Xfce4 Panel volume changer plugin for Raspberry Pi
+# Xfce4 Pi Volume Plugin
+Xfce4 Panel volume changer plugins for Raspberry Pi  
 
-Although xfce4 has its own volume plugins, but those have these following problems.  
-* Dependency on gstreamer0.10 but other programs use gstreamer1.0  
-* Volume can not be increased much.  
-* Another plugin depends on pulseaudio, but it causes several sound problem (such as, no sound in dosbox, audio player is paused automatically).  
+RPi OS have two volume plugins for lxpanel - lxplug-volume and lxplug-volumepulse  
+The first one is used for ALSA and the second one is for PulseAudio server.  
+Both plugins are very intuitive and allows to switch to HDMI or 3.5mm jack or any bluetooth device.  
 
-To solve these problems, i have ported lxplug-volume plugin to xfce. It depends only on alsa.  
+But those plugins are not available for XFCE4 panel.  
+So I have ported those plugins for Xfce panel.  
 
-## Build
+Ported from :
+lxplug-volume         v0.21
+lxplug-volumepulse v0.1
+
+### Build
 install these build dependencies...  
-* libasound2-dev  
 * xfce4-panel-dev  
-* libgtk2.0-dev (automatically installed)  
+* libgtk2.0-dev  
+* libasound2-dev (for ALSA only)  
+* libpulse-dev (for PulseAudio only)  
 
 Unzip the source archive.  
 Open terminal and change directory to xfce4-pi-volume-plugin-master directory.  
-run this command...  
-`make`
+To build volumealsa, run ...  
+`cd volumealsa`  
+`make`  
+Or build volumepulse by running...  
+`cd volumepulse`  
+`make`  
 
 ### Install and Uninstall
 To install run...  
@@ -26,5 +35,5 @@ To install run...
 To uninstall run...  
 `sudo make uninstall`  
 
-After installing go to panel settings and add this plugin to your panel.
+After installing go to panel settings and add this plugin to your panel.  
 

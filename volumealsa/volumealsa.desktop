@@ -1,0 +1,10 @@
+[Xfce Panel]
+Type=X-XFCE-PanelPlugin
+Encoding=UTF-8
+Name=Volume Control (ALSA)
+Comment=Change audio volume for Alsa Interface
+Icon=audio-volume-high
+X-XFCE-Module=volumealsa
+X-XFCE-Internal=true
+X-XFCE-Unique=true
+#X-XFCE-API=1.0

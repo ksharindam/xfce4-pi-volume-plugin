@@ -1,4 +1,3 @@
-This plugin has been ported from Lxplug-Volume plugin v0.21.
 The following changes has been made.
 
 In the constructor lxpanel returns the top level GtkWidget which is shown in the
@@ -13,23 +12,16 @@ return toplevel_widget;
 with
 gtk_container_add(GTK_CONTAINER(panel_plugin), toplevel_widget);
 
-connect "free-data" signal to volumealsa-destructor
+"free-data" signal is connected to volumealsa-destructor using
+lxpanel_plugin_set_data() function macro
 
-lxpanel_plugin_set_taskbar_icon() and lxpanel_plugin_set_menu_icon()
-have been replaced with
-void gtkimage_set_icon(GtkWidget *image, const char *name, int size)
-{
-    GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
-    GdkPixbuf *pixbuf = xfce_panel_pixbuf_from_source(name, icon_theme, size);
-    gtk_image_set_from_pixbuf (GTK_IMAGE (image), pixbuf);
-    if (pixbuf != NULL) g_object_unref (pixbuf);
-}
 
-lxpanel_plugin_popup_set_position_helper()
-hasbeen replaced with
-xfce_panel_plugin_position_widget()
 
 FM_DEFINE_MODULE (lxpanel_gtk, volumealsabt)
 has been replaced with
 XFCE_PANEL_PLUGIN_REGISTER_INTERNAL(volumealsa_constructor);
 
+Other Changes :
+Mouse grab in volume popup disabled
+show bluetooh devices even if not trusted
+show bluetooh devices in device profiles dialog only if connected
