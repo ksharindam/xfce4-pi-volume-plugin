@@ -900,6 +900,7 @@ static void volumepulse_constructor (XfcePanelPlugin *panel)
     g_signal_connect (vol->plugin, "scroll-event", G_CALLBACK (volumepulse_mouse_scrolled), vol);
     g_signal_connect (panel_get_icon_theme (panel), "changed", G_CALLBACK (volumepulse_theme_change), vol);
     g_signal_connect (G_OBJECT (panel), "size-changed", G_CALLBACK (volumepulse_panel_size_change), vol);//XFCE:
+    g_signal_connect (G_OBJECT (panel), "free-data", G_CALLBACK (volumepulse_destructor), (gpointer) vol);//XFCE:
 
     /* Find HDMIs */
     hdmi_init (vol);
