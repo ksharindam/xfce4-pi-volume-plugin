@@ -330,8 +330,8 @@ static void bt_connect_device (VolumePulsePlugin *vol, const char *device)
         g_free (msg);
         if (btop->conn_disc == RECONNECT)
         {
-            if (btop->direction != OUTPUT) vsystem ("rm ~/.btin");
-            if (btop->direction != INPUT) vsystem ("rm ~/.btout");
+            if (btop->direction != OUTPUT) vsystem ("rm -f ~/.btin");
+            if (btop->direction != INPUT) vsystem ("rm -f ~/.btout");
         }
         bt_next_operation (vol);
     }
@@ -360,8 +360,8 @@ static void bt_cb_connected (GObject *source, GAsyncResult *res, gpointer user_d
         g_error_free (error);
         if (btop->conn_disc == RECONNECT)
         {
-            if (btop->direction != OUTPUT) vsystem ("rm ~/.btin");
-            if (btop->direction != INPUT) vsystem ("rm ~/.btout");
+            if (btop->direction != OUTPUT) vsystem ("rm -f ~/.btin");
+            if (btop->direction != INPUT) vsystem ("rm -f ~/.btout");
         }
     }
     else
@@ -405,7 +405,7 @@ static void bt_cb_connected (GObject *source, GAsyncResult *res, gpointer user_d
                 {
                     paname = bt_to_pa_name (btop->device, "source", "headset_head_unit");
                     pulse_change_source (vol, paname);
-                    vsystem ("echo %s > ~/.btin", btop->device);
+                    //vsystem ("echo %s > ~/.btin", btop->device);//XFCE
                     g_free (paname);
                 }
 
@@ -617,6 +617,7 @@ gboolean bluetooth_is_connected (VolumePulsePlugin *vol, const char *path)
 
 void bluetooth_set_output (VolumePulsePlugin *vol, const char *name, const char *label)
 {
+    DEBUG("Connecting Bluetooth device '%s' as input...",  label);
     bt_connect_dialog_show (vol, _("Connecting Bluetooth device '%s' as output..."), label);
 
     pulse_get_default_sink_source (vol);
@@ -647,10 +648,10 @@ void bluetooth_set_output (VolumePulsePlugin *vol, const char *name, const char 
             bt_add_operation (vol, vol->bt_iname, CONNECT, INPUT);
         }
         else
-        {
-            // New output device is the same as current input device
+        {   // New output device is the same as current input device
+            bt_add_operation (vol, name, CONNECT, OUTPUT);//XFCE commented out lines below
 
-            if (vol->bt_oname && !g_strcmp0 (vol->bt_oname, name))
+            /*if (vol->bt_oname && !g_strcmp0 (vol->bt_oname, name))
             {
                 // Current output device exists and is the same as new output device, so connect new device as output only to force A2DP when reconnecting
                 bt_add_operation (vol, name, CONNECT, OUTPUT);
@@ -658,8 +659,8 @@ void bluetooth_set_output (VolumePulsePlugin *vol, const char *name, const char 
             else
             {
                 // No current output device, or current output device is not the same as new output device, so connect new device as both input and output
-                bt_add_operation (vol, name, CONNECT, BOTH);
-            }
+                bt_add_operation (vol, name, CONNECT, BOTH);//XFCE
+            }*/
         }
     }
 
@@ -673,6 +674,7 @@ void bluetooth_set_output (VolumePulsePlugin *vol, const char *name, const char 
 
 void bluetooth_set_input (VolumePulsePlugin *vol, const char *name, const char *label)
 {
+    DEBUG("Connecting Bluetooth device '%s' as input...",  label);
     bt_connect_dialog_show (vol, _("Connecting Bluetooth device '%s' as input..."), label);
 
     pulse_get_default_sink_source (vol);
@@ -714,7 +716,7 @@ void bluetooth_set_input (VolumePulsePlugin *vol, const char *name, const char *
 
 void bluetooth_remove_output (VolumePulsePlugin *vol)
 {
-    vsystem ("rm ~/.btout");
+    vsystem ("rm -f ~/.btout");
     pulse_get_default_sink_source (vol);
     if (strstr (vol->pa_default_sink, "bluez"))
     {
@@ -732,7 +734,7 @@ void bluetooth_remove_output (VolumePulsePlugin *vol)
 
 void bluetooth_remove_input (VolumePulsePlugin *vol)
 {
-    vsystem ("rm ~/.btin");
+    vsystem ("rm -f ~/.btin");
     pulse_get_default_sink_source (vol);
     if (strstr (vol->pa_default_source, "bluez"))
     {

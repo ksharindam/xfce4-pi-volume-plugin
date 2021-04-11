@@ -902,7 +902,8 @@ static void volumepulse_constructor (XfcePanelPlugin *panel)
     g_signal_connect (G_OBJECT (panel), "size-changed", G_CALLBACK (volumepulse_panel_size_change), vol);//XFCE:
     g_signal_connect (G_OBJECT (panel), "free-data", G_CALLBACK (volumepulse_destructor), (gpointer) vol);//XFCE:
 
-    /* Find HDMIs */
+    /* Delete any old ALSA config */
+    vsystem ("rm -f ~/.asoundrc");    /* Find HDMIs */
     hdmi_init (vol);
 
     /* Set up PulseAudio */

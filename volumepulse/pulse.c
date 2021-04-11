@@ -65,7 +65,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     pa_threaded_mainloop_unlock (vol->pa_mainloop); \
     if (vol->pa_error_msg) return 0; \
     else return 1;
-    
+
 #define PA_VOL_SCALE 655    /* GTK volume scale is 0-100; PA scale is 0-65535 */
 
 /*----------------------------------------------------------------------------*/
@@ -118,7 +118,7 @@ static void pa_cb_add_devices_to_profile_dialog (pa_context *c, const pa_card_in
 /* PulseAudio controller initialisation / teardown                            */
 /*----------------------------------------------------------------------------*/
 
-/* 
+/*
  * The PulseAudio controller runs asynchronously in a new thread.
  * The initial functions are to set up and tear down the controller,
  * which is subsequently accessed by its context, which is created
@@ -305,7 +305,7 @@ static void pa_cb_generic_success (pa_context *context, int success, void *userd
 /* Volume and mute control                                                    */
 /*----------------------------------------------------------------------------*/
 
-/* 
+/*
  * For get operations, the generic get_sink_info operation is called on the
  * current default sink; the values are written into the global structure
  * by the callbacks, and the top-level functions return them from there.
@@ -323,8 +323,7 @@ int pulse_set_volume (VolumePulsePlugin *vol, int volume)
     pa_cvolume cvol;
     vol->pa_volume = volume * PA_VOL_SCALE;
     cvol.channels = vol->pa_channels;
-    cvol.values[0] = vol->pa_volume;
-    cvol.values[1] = vol->pa_volume;
+    for (int i = 0; i < cvol.channels; i++) cvol.values[i] = vol->pa_volume;
 
     DEBUG ("pulse_set_volume %d", volume);
     START_PA_OPERATION
@@ -379,8 +378,7 @@ static int pa_restore_volume (VolumePulsePlugin *vol)
 {
     pa_cvolume cvol;
     cvol.channels = vol->pa_channels;
-    cvol.values[0] = vol->pa_volume;
-    cvol.values[1] = vol->pa_volume;
+    for (int i = 0; i < cvol.channels; i++) cvol.values[i] = vol->pa_volume;
 
     DEBUG ("pa_restore_volume");
     START_PA_OPERATION
@@ -542,7 +540,7 @@ static int pa_move_stream_to_default_sink (VolumePulsePlugin *vol, int index)
  * Then, all currently active input streams are listed in pa_indices.
  * Finally, all streams listed in pa_indices are moved to the new source.
  */
- 
+
 void pulse_change_source (VolumePulsePlugin *vol, const char *sourcename)
 {
     DEBUG ("pulse_change_source %s", sourcename);
@@ -688,11 +686,11 @@ static int pa_unmute_stream (VolumePulsePlugin *vol, int index)
 /* Profiles                                                                   */
 /*----------------------------------------------------------------------------*/
 
-/* 
+/*
  * Read the profile of the supplied card - this is polled to check if a Bluetooth device has
  * successfully connected to PulseAudio, hence why the profile is NULLed before starting so
  * that old profile data does not spuriously cause the poll to succeed prematurely.
- */ 
+ */
 
 int pulse_get_profile (VolumePulsePlugin *vol, const char *card)
 {
@@ -737,14 +735,14 @@ int pulse_set_profile (VolumePulsePlugin *vol, const char *card, const char *pro
 /* Device menu                                                                */
 /*----------------------------------------------------------------------------*/
 
-/* 
+/*
  * To populate the device select menu, the controller is initially queried for the
  * list of audio cards, which are stored with their card names. After discovery is
  * complete, the controller is queried for the list of sinks and sources, which is
  * used to replace the card name with the relevant sink or source name, allowing
  * cards which are have the wrong profile set to be shown greyed-out in the menu.
  */
- 
+
 /* Loop through all cards, adding each to relevant part of device menu */
 
 int pulse_add_devices_to_menu (VolumePulsePlugin *vol, gboolean input, gboolean internal)
